@@ -10,12 +10,33 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuditRouteImport } from './routes/audit'
+import { Route as DepartmentsRouteImport } from './routes/departments'
+import { Route as GatesRouteImport } from './routes/gates'
 import { Route as PassportRouteImport } from './routes/passport'
+import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as RfidRouteImport } from './routes/rfid'
 import { Route as TrackingRouteImport } from './routes/tracking'
+import { Route as UsersRouteImport } from './routes/users'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuditRoute = AuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DepartmentsRoute = DepartmentsRouteImport.update({
+  id: '/departments',
+  path: '/departments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GatesRoute = GatesRouteImport.update({
+  id: '/gates',
+  path: '/gates',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PassportRoute = PassportRouteImport.update({
@@ -23,40 +44,107 @@ const PassportRoute = PassportRouteImport.update({
   path: '/passport',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReportsRoute = ReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RfidRoute = RfidRouteImport.update({
+  id: '/rfid',
+  path: '/rfid',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrackingRoute = TrackingRouteImport.update({
   id: '/tracking',
   path: '/tracking',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UsersRoute = UsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/audit': typeof AuditRoute
+  '/departments': typeof DepartmentsRoute
+  '/gates': typeof GatesRoute
   '/passport': typeof PassportRoute
+  '/reports': typeof ReportsRoute
+  '/rfid': typeof RfidRoute
   '/tracking': typeof TrackingRoute
+  '/users': typeof UsersRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/audit': typeof AuditRoute
+  '/departments': typeof DepartmentsRoute
+  '/gates': typeof GatesRoute
   '/passport': typeof PassportRoute
+  '/reports': typeof ReportsRoute
+  '/rfid': typeof RfidRoute
   '/tracking': typeof TrackingRoute
+  '/users': typeof UsersRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/audit': typeof AuditRoute
+  '/departments': typeof DepartmentsRoute
+  '/gates': typeof GatesRoute
   '/passport': typeof PassportRoute
+  '/reports': typeof ReportsRoute
+  '/rfid': typeof RfidRoute
   '/tracking': typeof TrackingRoute
+  '/users': typeof UsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/passport' | '/tracking'
+  fullPaths:
+    | '/'
+    | '/audit'
+    | '/departments'
+    | '/gates'
+    | '/passport'
+    | '/reports'
+    | '/rfid'
+    | '/tracking'
+    | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/passport' | '/tracking'
-  id: '__root__' | '/' | '/passport' | '/tracking'
+  to:
+    | '/'
+    | '/audit'
+    | '/departments'
+    | '/gates'
+    | '/passport'
+    | '/reports'
+    | '/rfid'
+    | '/tracking'
+    | '/users'
+  id:
+    | '__root__'
+    | '/'
+    | '/audit'
+    | '/departments'
+    | '/gates'
+    | '/passport'
+    | '/reports'
+    | '/rfid'
+    | '/tracking'
+    | '/users'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuditRoute: typeof AuditRoute
+  DepartmentsRoute: typeof DepartmentsRoute
+  GatesRoute: typeof GatesRoute
   PassportRoute: typeof PassportRoute
+  ReportsRoute: typeof ReportsRoute
+  RfidRoute: typeof RfidRoute
   TrackingRoute: typeof TrackingRoute
+  UsersRoute: typeof UsersRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -68,11 +156,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/audit': {
+      id: '/audit'
+      path: '/audit'
+      fullPath: '/audit'
+      preLoaderRoute: typeof AuditRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/departments': {
+      id: '/departments'
+      path: '/departments'
+      fullPath: '/departments'
+      preLoaderRoute: typeof DepartmentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gates': {
+      id: '/gates'
+      path: '/gates'
+      fullPath: '/gates'
+      preLoaderRoute: typeof GatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/passport': {
       id: '/passport'
       path: '/passport'
       fullPath: '/passport'
       preLoaderRoute: typeof PassportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rfid': {
+      id: '/rfid'
+      path: '/rfid'
+      fullPath: '/rfid'
+      preLoaderRoute: typeof RfidRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tracking': {
@@ -82,13 +205,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TrackingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/users': {
+      id: '/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof UsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuditRoute: AuditRoute,
+  DepartmentsRoute: DepartmentsRoute,
+  GatesRoute: GatesRoute,
   PassportRoute: PassportRoute,
+  ReportsRoute: ReportsRoute,
+  RfidRoute: RfidRoute,
   TrackingRoute: TrackingRoute,
+  UsersRoute: UsersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
