@@ -171,8 +171,8 @@ let movementId = 1;
 for (let i = 1; i <= 42; i++) {
   // Distribute rolls across the pipeline; later rolls are earlier in the flow
   const stage = i <= 8 ? 7 : i <= 14 ? 6 : i <= 20 ? 5 : i <= 27 ? 4 : i <= 33 ? 3 : i <= 38 ? 2 : 1;
-  const dept = deptNames[stage - 1];
-  const statusPool = statusesByStage[stage];
+  const dept = deptNames[stage - 1]!;
+  const statusPool = statusesByStage[stage]!;
   const status = statusPool[i % statusPool.length];
   const dayCreated = Math.max(1, 18 - stage * 2 - (i % 3));
   const rollId = i;
@@ -186,8 +186,8 @@ for (let i = 1; i <= 42; i++) {
     width: 120 + ((i * 13) % 100),
     length: 800 + ((i * 97) % 1400),
     weight: 45 + ((i * 11) % 160),
-    machine: machines[i % 4],
-    operator: operators[i % operators.length],
+    machine: machines[i % 4]!,
+    operator: operators[i % operators.length]!,
     productionDate: `2026-09-${pad(dayCreated, 2)}`,
     currentDepartment: dept,
     currentStatus: status,
@@ -198,17 +198,17 @@ for (let i = 1; i <= 42; i++) {
 
   // movement history: one record per completed stage transition
   for (let s = 1; s <= stage; s++) {
-    const from = s === 1 ? "—" : deptNames[s - 2];
-    const to = deptNames[s - 1];
+    const from = s === 1 ? "—" : deptNames[s - 2]!;
+    const to = deptNames[s - 1]!;
     movements.push({
       id: movementId++,
       rollId,
       sourceDept: from,
       destinationDept: to,
-      status: s === stage ? status : s === 5 ? "Pending QC" : "In Production",
-      user: s === 1 ? roll.operator : users[1 + (i % 2)].fullName,
+      status: (s === stage ? status : s === 5 ? "Pending QC" : "In Production") as string,
+      user: s === 1 ? roll.operator : users[1 + (i % 2)]!.fullName,
       timestamp: ts(Math.min(18, dayCreated + s), 6 + ((i + s) % 12), (i * 13 + s * 7) % 60),
-      device: s === 1 ? `HH-0${(i % 6) + 1}` : i % 3 === 0 ? `GATE-${s === 7 ? "DSP" : deptNames[s - 1].slice(0, 3).toUpperCase()}-01` : `HH-0${(i + s) % 6 + 1}`,
+      device: s === 1 ? `HH-0${(i % 6) + 1}` : i % 3 === 0 ? `GATE-${s === 7 ? "DSP" : deptNames[s - 1]!.slice(0, 3).toUpperCase()}-01` : `HH-0${((i + s) % 6) + 1}`,
       machine: s === 1 ? roll.machine : "—",
       remarks: s === 1 ? "Roll created" : s === 5 ? "Sent for inspection" : "Stage transfer",
       viaGate: i % 3 === 0 && s > 1 ? `Gate ${deptNames[s - 1]} ${i % 2 === 0 ? "Entry" : "Exit"}` : undefined,
@@ -261,12 +261,12 @@ export const gates: Gate[] = [
 ];
 
 export const gateEvents: GateEvent[] = [
-  { id: 1, gate: "GATE-DSP-01", epc: rolls[12].rfidEpc, rollNumber: rolls[12].rollNumber, direction: "Exit", signalStrength: -58, timestamp: "2026-09-18 10:12:04", result: "Movement Created" },
-  { id: 2, gate: "GATE-DSP-01", epc: rolls[12].rfidEpc, rollNumber: rolls[12].rollNumber, direction: "Exit", signalStrength: -59, timestamp: "2026-09-18 10:12:11", result: "Duplicate Ignored" },
-  { id: 3, gate: "GATE-CUT-01", epc: rolls[24].rfidEpc, rollNumber: rolls[24].rollNumber, direction: "Entry", signalStrength: -62, timestamp: "2026-09-18 10:05:48", result: "Movement Created" },
+  { id: 1, gate: "GATE-DSP-01", epc: rolls[12]!.rfidEpc, rollNumber: rolls[12]!.rollNumber, direction: "Exit", signalStrength: -58, timestamp: "2026-09-18 10:12:04", result: "Movement Created" },
+  { id: 2, gate: "GATE-DSP-01", epc: rolls[12]!.rfidEpc, rollNumber: rolls[12]!.rollNumber, direction: "Exit", signalStrength: -59, timestamp: "2026-09-18 10:12:11", result: "Duplicate Ignored" },
+  { id: 3, gate: "GATE-CUT-01", epc: rolls[24]!.rfidEpc, rollNumber: rolls[24]!.rollNumber, direction: "Entry", signalStrength: -62, timestamp: "2026-09-18 10:05:48", result: "Movement Created" },
   { id: 4, gate: "GATE-LAM-01", epc: "E280 6894 0000 40999 FF", rollNumber: null, direction: "Entry", signalStrength: -71, timestamp: "2026-09-18 09:52:17", result: "Unknown Tag Alert" },
-  { id: 5, gate: "GATE-PRT-01", epc: rolls[35].rfidEpc, rollNumber: rolls[35].rollNumber, direction: "Entry", signalStrength: -64, timestamp: "2026-09-18 09:40:02", result: "Movement Created" },
-  { id: 6, gate: "GATE-CUT-01", epc: rolls[22].rfidEpc, rollNumber: rolls[22].rollNumber, direction: "Entry", signalStrength: -61, timestamp: "2026-09-18 09:18:33", result: "Movement Created" },
+  { id: 5, gate: "GATE-PRT-01", epc: rolls[35]!.rfidEpc, rollNumber: rolls[35]!.rollNumber, direction: "Entry", signalStrength: -64, timestamp: "2026-09-18 09:40:02", result: "Movement Created" },
+  { id: 6, gate: "GATE-CUT-01", epc: rolls[22]!.rfidEpc, rollNumber: rolls[22]!.rollNumber, direction: "Entry", signalStrength: -61, timestamp: "2026-09-18 09:18:33", result: "Movement Created" },
 ];
 
 // ---------------------------------------------------------------- charts
@@ -302,10 +302,10 @@ export const userActivity = [
 export function getKpis() {
   const total = 2184; // lifetime incl. archived
   const active = rolls.filter((r) => r.currentStatus !== "Dispatched").length + 380;
-  const today = productionTrend[productionTrend.length - 1].rolls;
+  const today = productionTrend[productionTrend.length - 1]!.rolls;
   const delayed = rolls.filter((r) => ["Hold", "Rework", "QC Fail"].includes(r.currentStatus)).length + 14;
   const pendingQc = rolls.filter((r) => r.currentStatus === "Pending QC").length + 22;
-  const dispatched = dailyDispatch[dailyDispatch.length - 1].dispatched;
+  const dispatched = dailyDispatch[dailyDispatch.length - 1]!.dispatched;
   return { total, active, today, delayed, pendingQc, dispatched };
 }
 
@@ -313,7 +313,7 @@ export function rollsByDepartment() {
   return departments.map((d) => ({
     department: d.code,
     name: d.name,
-    rolls: rolls.filter((r) => r.currentDepartment === d.name).length + (d.sequenceNo * 17) % 60,
+    rolls: rolls.filter((r) => r.currentDepartment === d.name).length + ((d.sequenceNo * 17) % 60),
   }));
 }
 
@@ -326,14 +326,14 @@ export function qcStatusBreakdown() {
     { name: "Hold", value: 0 },
   ];
   for (const r of rolls) {
-    const b = base.find((x) => x.name === r.currentStatus);
+    const b = base.find((x) => x.name === (r.currentStatus as string));
     if (b) b.value++;
   }
-  base[0].value += 260;
-  base[1].value += 22;
-  base[2].value += 6;
-  base[3].value += 5;
-  base[4].value += 3;
+  base[0]!.value += 260;
+  base[1]!.value += 22;
+  base[2]!.value += 6;
+  base[3]!.value += 5;
+  base[4]!.value += 3;
   return base;
 }
 
