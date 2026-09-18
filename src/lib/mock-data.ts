@@ -70,7 +70,7 @@ export interface RollMovement {
   device: string;
   machine: string;
   remarks: string;
-  viaGate?: string;
+  viaGate?: string | undefined;
 }
 
 export interface AuditLog {
@@ -173,7 +173,7 @@ for (let i = 1; i <= 42; i++) {
   const stage = i <= 8 ? 7 : i <= 14 ? 6 : i <= 20 ? 5 : i <= 27 ? 4 : i <= 33 ? 3 : i <= 38 ? 2 : 1;
   const dept = deptNames[stage - 1]!;
   const statusPool = statusesByStage[stage]!;
-  const status = statusPool[i % statusPool.length];
+  const status = statusPool[i % statusPool.length]!;
   const dayCreated = Math.max(1, 18 - stage * 2 - (i % 3));
   const rollId = i;
 
